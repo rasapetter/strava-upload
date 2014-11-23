@@ -38,14 +38,15 @@ if __name__ == '__main__':
     if args.name: params['name'] = args.name
     if args.description: params['description'] = args.description
 
-    r = requests.post(UPLOAD_URL, params=params,
-    files={
+    # Upload the file.
+    r = requests.post(UPLOAD_URL, params=params, files={
         'file': open(filepath, 'rb')
     }, headers={
         'Authorization': 'Bearer %s' % args.access_token
     })
-    response = r.text
 
+    # Handle the response.
+    response = r.text
     try:
         response = json.loads(response)
     except: pass
@@ -61,4 +62,4 @@ if __name__ == '__main__':
         print "Strava: %s" % response['status']
         exit()
 
-    print "Uploaded activity."
+    print "Activity uploaded."

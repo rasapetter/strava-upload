@@ -22,8 +22,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-        # Exchange a request code for an access token
         if qs['code']:
+            # Exchange a request code for an access token.
             code = qs['code'][0]
             params = {
                 'client_id': client_id,
@@ -42,6 +42,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write("Failed to get access token.")
 
+            # Kill the HTTP server
             killer = threading.Thread(target=http_server.shutdown)
             killer.daemon = True
             killer.start()
@@ -77,6 +78,7 @@ if __name__ == '__main__':
         print "port must be integer"
         exit()
 
+    # Point to the authorization page on strava.com.
     params = {
         'client_id': args.client_id,
         'response_type': 'code',
@@ -87,6 +89,8 @@ if __name__ == '__main__':
 
     print "Visit the following URL and follow the instructions: %s" % request_token_url
 
+    # Start an HTTP server to capture the 'code' parameter when
+    # the user returns from strava.com.
     http_server = HTTPServer(('0.0.0.0', args.port), RequestHandler)
     try:
         http_server.serve_forever()
