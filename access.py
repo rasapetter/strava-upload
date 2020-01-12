@@ -83,7 +83,7 @@ if __name__ == '__main__':
         'client_id': args.client_id,
         'response_type': 'code',
         'redirect_uri': 'http://localhost:' + str(args.port),
-        'scope': 'write'
+        'scope': 'activity:write'
     }
     request_token_url = REQUEST_TOKEN_URL + "?" + urllib.urlencode(params)
 
